@@ -11,6 +11,7 @@ class Team(models.Model):
     coach_name = models.CharField(max_length=255)
     team_name = models.CharField(max_length=255)
     amount = models.IntegerField(default=40000, null=True, blank=True)
+    paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     
     
@@ -42,6 +43,7 @@ class Booking(models.Model):
     team_side = models.CharField(max_length=10, choices=SIDE_CHOICE)
     created_at = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(null=True, blank=True)
+    paid = models.BooleanField(default=False)
     
     def __str__(self):
         return f'{self.email}'

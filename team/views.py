@@ -33,9 +33,6 @@ class Teams(ListCreateAPIView):
             result = res.json()
             data["data"] = serializer.data
             data["payment_redirect"] = result
-            email_body = f"Hi {coach_name},\n\nYou are all set! Your team has successfully registered for the fusion cup competition.\n\nThere would be a single elimination playoff on the 11th of November at the Ogudu recreational center by 11am where each teams compete to qualify for the finals. Come prepared in uniformity and with your proper kits.\n\nThis email serves as an access pass for entry therefore should be presented at the venue.\n\nWe are looking forward to a good game of basketball. For questions and enquiries please reach out to us at contact@gidifusion.ng.\n\nBest Regards,\nTeam Gidifusion."
-            email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":serializer.data['email']}
-            Util.send_email(email_data)
             return Response(data, status = status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
     
@@ -52,7 +49,6 @@ class Ticket(ListCreateAPIView):
         if serializer.is_valid():
             serializer.save()
             tickets = Booking.objects.filter(email=serializer.data['email']).order_by('-created_at')
-            print(tickets)
             ticket = tickets[0]
             headers = {'Authorization': f'Bearer {settings.PAYSTACK_PRIVATE_KEY}', 'Content-Type':'application/json'}
             payload = {
@@ -63,9 +59,9 @@ class Ticket(ListCreateAPIView):
             result = res.json()
             data["data"] = serializer.data
             data["payment_redirect"] = result
-            email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
-            email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":ticket.email}
-            Util.send_email(email_data)
+            # email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
+            # email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":ticket.email}
+            # # Util.send_email(email_data)
             return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
@@ -78,7 +74,31 @@ class PayCallback(GenericAPIView):
         headers = {'Authorization': f'Bearer {settings.PAYSTACK_PRIVATE_KEY}'}
         res = requests.get(url, headers=headers)
         result=res.json()
-        return Response({'message': result["message"]}, status=status.HTTP_200_OK)
+        print(result)
+        amount =  result['data']['amount']
+        amount = amount/100
+        email = result['data']['customer']['email']
+        if result['message'] == 'Verification successful':
+            if amount == 40000:
+                teams = Team.objects.filter(email=email).order_by('-created_at')
+                team = teams[0]
+                team.paid = True
+                team.save()
+                email_body = f"Hi {team.coach_name},\n\nYou are all set! Your team has successfully registered for the fusion cup competition.\n\nThere would be a single elimination playoff on the 11th of November at the Ogudu recreational center by 11am where each teams compete to qualify for the finals. Come prepared in uniformity and with your proper kits.\n\nThis email serves as an access pass for entry therefore should be presented at the venue.\n\nWe are looking forward to a good game of basketball. For questions and enquiries please reach out to us at contact@gidifusion.ng.\n\nBest Regards,\nTeam Gidifusion."
+                email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":email}
+                Util.send_email(email_data)
+            else:
+                tickets = Booking.objects.filter(email=email).order_by('-created_at')
+                ticket = tickets[0]
+                ticket.paid = True
+                ticket.save()
+                data["payment_redirect"] = result
+                email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
+                email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":ticket.email}
+                Util.send_email(email_data)
+            return Response({'message': result["message"]}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': result['message']}, status=status.HTTP_200_OK)
     
 class PaymentVerify(GenericAPIView):
     serializer_class =TicketSerializer
