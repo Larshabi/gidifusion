@@ -5,7 +5,12 @@ from .utils import Util
 class TeammateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teammate
-        fields = '__all__'
+        fields = [
+            'name',
+            'phone',
+            'team'
+        ]
+        read_only_fields = ['team']
         
 class TeamSerializer(serializers.ModelSerializer):
     team_mates = TeammateSerializer(many=True)

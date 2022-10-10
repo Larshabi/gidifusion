@@ -22,7 +22,6 @@ class Teams(ListCreateAPIView):
             url = 'https://api.paystack.co/transaction/initialize'
             serializer.save()
             coach_name = serializer.data['coach_name']
-            # team_name = serializer.data['team_name']
             team = Team.objects.get(team_name=serializer.data['team_name'])
             headers = {'Authorization': f'Bearer {settings.PAYSTACK_PRIVATE_KEY}', 'Content-Type':'application/json'}
             payload = {
