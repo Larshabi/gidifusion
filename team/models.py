@@ -10,6 +10,7 @@ class Team(models.Model):
     team_side = models.CharField(max_length=20, choices=SIDE_CHOICE)
     coach_name = models.CharField(max_length=255)
     team_name = models.CharField(max_length=255)
+    amount = models.IntegerField(default=40000, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     

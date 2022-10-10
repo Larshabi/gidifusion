@@ -3,7 +3,8 @@ from django.urls import path, include, re_path
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
-from team.views import Ticket
+from team.views import Ticket, PayCallback, PaymentVerify
+
 schema_view = get_schema_view(
     openapi.Info(
         title="GIDIFUSION API",
@@ -21,5 +22,7 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
     path('team/', include('team.urls')),
-    path('ticket/', Ticket.as_view())
+    path('ticket/', Ticket.as_view()),
+    path('paystack/callback/', PayCallback.as_view()), 
+    path('paystack/verify/<str:tref>/', PaymentVerify.as_view()),
 ]

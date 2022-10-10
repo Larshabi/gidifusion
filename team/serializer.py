@@ -1,5 +1,6 @@
 from .models import Team, Teammate, Booking
 from rest_framework import serializers
+from .utils import Util
 
 class TeammateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,7 +44,9 @@ class TicketSerializer(serializers.ModelSerializer):
         if validated_data['ticket_type'] == 'VIP':
             price = 5000
         if validated_data['ticket_type'] == 'Regular':
-            price = 3000
+            price = 2000
         actual_price = validated_data['quantity'] * price
+        # data = {'to_email':validated_data['email'], 'email_subject':'Gidifusion Ticket', 'email_body':'something'}
+        # Util.send_email(data)
         return Booking.objects.create(price=actual_price, **validated_data)    
         
