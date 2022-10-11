@@ -131,4 +131,23 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
 PAYSTACK_PRIVATE_KEY = config('PAYSTACK_PRIVATE_KEY')
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with'
+]
+CORS_ALLOW_METHODS=[
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT'
+]
 
