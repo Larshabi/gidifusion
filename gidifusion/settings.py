@@ -151,7 +151,8 @@ CORS_ALLOW_METHODS=[
     'PUT'
 ]
 CORS_ALLOWED_ORIGINS=[
-    'https://sunny-dodol-56b88f.netlify.app'
+    'https://sunny-dodol-56b88f.netlify.app',
+    'http://localhost:3000'
 ]
 CSRF_TRUSTED_ORIGINS=CORS_ALLOWED_ORIGINS
 
