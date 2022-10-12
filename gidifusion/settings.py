@@ -150,4 +150,8 @@ CORS_ALLOW_METHODS=[
     'POST',
     'PUT'
 ]
+CORS_ALLOWED_ORIGINS=[
+    'https://sunny-dodol-56b88f.netlify.app'
+]
+CSRF_TRUSTED_ORIGINS=CORS_ALLOWED_ORIGINS
 
