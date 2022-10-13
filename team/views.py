@@ -92,7 +92,6 @@ class PayCallback(GenericAPIView):
                 ticket = tickets[0]
                 ticket.paid = True
                 ticket.save()
-                data["payment_redirect"] = result
                 email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
                 email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":ticket.email}
                 Util.send_email(email_data)
