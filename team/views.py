@@ -114,7 +114,7 @@ class PaymentVerify(GenericAPIView):
                 team = teams[0]
                 team.paid = True
                 team.save()
-                email_body = f"Hi {team.coach_name},\n\nYou are all set! Your team has successfully registered for the fusion cup competition.\n\nThere would be a single elimination playoff on the 11th of November at the Ogudu recreational center by 11am where each teams compete to qualify for the finals. Come prepared in uniformity and with your proper kits.\n\nThis email serves as an access pass for entry therefore should be presented at the venue.\n\nWe are looking forward to a good game of basketball. For questions and enquiries please reach out to us at contact@gidifusion.ng.\n\nBest Regards,\nTeam Gidifusion."
+                email_body = f"Hi {team.coach_name},\n\nYou are all set! Your team has successfully registered for the fusion cup competition.\n\nThere would be a single elimination playoff on the 11th of November at the Ogudu recreational center by 11am where each teams compete to qualify for the finals. Come prepared in uniformity and with your proper kits.\n\nThis email serves as an access pass for entry therefore should be presented at the venue.\n\nUpbeat Center, lekki phase 1.\n19th November, 2022. 12pm.\n\nWe are looking forward to a good game of basketball. For questions and enquiries please reach out to us at contact@gidifusion.ng.\n\nBest Regards,\nTeam Gidifusion."
                 email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":email}
                 Util.send_email(email_data)
             else:
@@ -122,7 +122,7 @@ class PaymentVerify(GenericAPIView):
                 ticket = tickets[0]
                 ticket.paid = True
                 ticket.save()
-                email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nUpbeat Center, lekki phase 1.\n19th November, 2022.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
+                email_body = f'Hi There,\nWelcome to Gidifusion! You have successfully registered for the first edition of the Gidifusion rave 2022.\n\nThis email serves as an access pass and should be presented at the venue.\n\nUpbeat Center, lekki phase 1.\n19th November, 2022. 12pm.\n\nWe are looking forward to seeing you.\nIf you have any questions, reach out to us at contact@gidifusion.ng\n\nBest Regards,\nTeam Gidifusion\n\n.......\nDetails of Ticket purchased here\n{ticket.email}\n{ticket.quantity}\n{ticket.ticket_type}'
                 email_data = {"email_body":email_body, "email_subject":"Team Registration", "to_email":ticket.email}
                 Util.send_email(email_data)
             return Response({'message': result["message"]}, status=status.HTTP_200_OK)
