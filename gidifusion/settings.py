@@ -155,4 +155,12 @@ CORS_ALLOWED_ORIGINS=[
     'http://localhost:3000'
 ]
 CSRF_TRUSTED_ORIGINS=CORS_ALLOWED_ORIGINS
-
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS':{
+        'Bearer':{
+            'type':'apiKey',
+            'name':'Authorization',
+           'in':'header' 
+        }
+    }
+}
