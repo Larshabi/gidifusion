@@ -166,3 +166,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+REST_FRAMEWORK = {
+    'NON_FIELD_ERRORS_KEY':'errors'
+}
