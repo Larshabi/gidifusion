@@ -72,12 +72,12 @@ WSGI_APPLICATION = 'gidifusion.wsgi.application'
 
 DATABASES = {}
 if DEBUG:
-    #  DATABASES['default']={
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)  
-    DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
+     DATABASES['default']={
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+    # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)  
+    # DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
 else:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)  
     DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'))
@@ -154,7 +154,11 @@ CORS_ALLOW_METHODS=[
 ]
 CORS_ALLOWED_ORIGINS=[
     'https://sunny-dodol-56b88f.netlify.app',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://www.gidifusion.ng',
+    'http://www.gidifusion.ng',
+    'https://gidifusion.ng',
+    'http://gidifusion.ng',
 ]
 CSRF_TRUSTED_ORIGINS=CORS_ALLOWED_ORIGINS
 SWAGGER_SETTINGS = {
