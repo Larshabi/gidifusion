@@ -100,7 +100,7 @@ class PayCallback(GenericAPIView):
 class PaymentVerify(GenericAPIView):
     serializer_class =TicketSerializer
     permission_classes = [AllowAny]
-    def get(self, reuest, tref):
+    def get(self, request, tref):
         url = f'https://api.paystack.co/transaction/verify/{tref}'
         headers = {'Authorization': f'Bearer {settings.PAYSTACK_PRIVATE_KEY}'}
         res = requests.get(url, headers=headers)
