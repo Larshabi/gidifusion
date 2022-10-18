@@ -1,2 +1,2 @@
-release: python manage.py migrate
-web gunicorn gidifusion.wsgi:application
+release: chmod u+x release.sh && ./release.sh
+web: gunicorn gidifusion.wsgi
