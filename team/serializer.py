@@ -25,6 +25,7 @@ class TeamsSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['email', 'coach_name', 'team_side', 'id']
         
+        
     def create(self, validated_data):
         team_name = validated_data.pop('team_name')
         team_mates = validated_data.pop('team_mates')
@@ -43,6 +44,15 @@ class TeamSerializer(serializers.ModelSerializer):
             'team_name',
             'team_side',
         ]
+        
+    def validate(self, attrs):
+        team_name = attrs.get("team_name","")
+        coach_name = attrs.get("coach_name","")
+        if Team.objects.filter(team_name=team_name).exists():
+            raise serializers.ValidationError("Team name already exists.")
+        if Team.objects.filter(coach_name=coach_name).exists():
+            raise serializers.ValidationError("A coach with name already exists.")
+        return super().validate(attrs)
     
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
